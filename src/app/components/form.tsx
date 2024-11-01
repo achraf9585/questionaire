@@ -2472,7 +2472,7 @@ const Form = () => {
                     <Checkbox
                       id="ksaEnterprises"
                       checked={formData.rdCollaboration.ksa.includes(
-                        "enterprises"
+                        "enterprises" as never
                       )}
                       onCheckedChange={() =>
                         handleCollaborationChange("ksa", "enterprises")
@@ -2485,13 +2485,16 @@ const Form = () => {
                   <div className="flex items-center space-x-2">
                     <Checkbox
                       id="ksaBusinessEnterprises"
-                      checked={formData.rdCollaboration.ksa.includes(
-                        "businessEnterprises"
-                      )}
+                      checked={
+                        formData.rdCollaboration?.ksa?.includes(
+                          "businessEnterprises" as never
+                        ) ?? false
+                      }
                       onCheckedChange={() =>
                         handleCollaborationChange("ksa", "businessEnterprises")
                       }
                     />
+
                     <Label htmlFor="ksaBusinessEnterprises">
                       Business enterprises outside your enterprise group
                     </Label>
@@ -2500,7 +2503,7 @@ const Form = () => {
                     <Checkbox
                       id="ksaUniversities"
                       checked={formData.rdCollaboration.ksa.includes(
-                        "universities"
+                        "universities" as never
                       )}
                       onCheckedChange={() =>
                         handleCollaborationChange("ksa", "universities")
@@ -2514,7 +2517,7 @@ const Form = () => {
                     <Checkbox
                       id="ksaGovernment"
                       checked={formData.rdCollaboration.ksa.includes(
-                        "government"
+                        "government" as never
                       )}
                       onCheckedChange={() =>
                         handleCollaborationChange("ksa", "government")
@@ -2528,7 +2531,7 @@ const Form = () => {
                     <Checkbox
                       id="ksaNonProfit"
                       checked={formData.rdCollaboration.ksa.includes(
-                        "nonProfit"
+                        "nonProfit" as never
                       )}
                       onCheckedChange={() =>
                         handleCollaborationChange("ksa", "nonProfit" as string)
