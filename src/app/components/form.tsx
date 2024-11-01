@@ -32,6 +32,153 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+type FormData = {
+  enterpriseName: string;
+  partOfGroup: string;
+  headOrAffiliate: string;
+  headLocation: string;
+  headCountry: string;
+  reportingUnit: string;
+  subsidiariesCovered: string;
+  reportingYear: string;
+  reportingPeriod: string;
+  businessRegistrationNumber: string;
+  address: {
+    street: string;
+    city: string;
+    region: string;
+    postCode: string;
+  };
+  website: string;
+  email: string;
+  contactNumber: string;
+  mainBusinessActivity: string;
+  isicCode: string;
+  governmentOwned: string;
+  establishmentYear: string;
+  totalEmployees: string;
+  worldwideWorkforce: string;
+  domesticSales: string;
+  carriedOutRD: string;
+  providedFundsForRD: string;
+  totalIntramualRDExpenditure: string;
+  rdLaborCosts: string;
+  rdOtherCurrentCosts: string;
+  rdCapitalExpenditure: {
+    landAndBuildings: string;
+    machineryAndEquipment: string;
+    capitalizedSoftware: string;
+    otherIntellectualProperty: string;
+  };
+  rdTypeAllocation: {
+    basicResearch: string;
+    appliedResearch: string;
+    experimentalDevelopment: string;
+  };
+  rdIndustryOrientation: string[];
+  rdGeographicLocation: string[];
+  rdKeyTechnologies: {
+    ictHardware: string;
+    software: string;
+    artificialIntelligence: string;
+    biotechnology: string;
+    renewableEnergy: string;
+  };
+  rdFieldOfResearch: {
+    naturalSciences: string;
+    engineeringAndTechnology: string;
+    medicalAndHealthSciences: string;
+    agriculturalAndVeterinarySciences: string;
+    socialSciences: string;
+    humanitiesAndArts: string;
+  };
+  rdSocioEconomicObjective: {
+    earthExploration: string;
+    environment: string;
+    spaceExploration: string;
+    transport: string;
+    energy: string;
+    industrialProduction: string;
+    health: string;
+    agriculture: string;
+    education: string;
+    culture: string;
+    politicalSystems: string;
+    defence: string;
+  };
+  sourcesOfFunds: {
+    parentCompanies: { ksa: string; abroad: string };
+    nonAffiliatedCompanies: { ksa: string; abroad: string };
+    governmentGrants: { ksa: string };
+    governmentContracts: { ksa: string };
+    foreignGovernments: { abroad: string };
+    higherEducation: { ksa: string; abroad: string };
+    privateNonProfits: { ksa: string; abroad: string };
+    ownFunds: { ksa: string; abroad: string };
+  };
+  rdTaxCredits: {
+    received: string;
+    amount: string;
+  };
+  extramualRD: {
+    madePayments: string;
+    totalAmount: string;
+  };
+  rdRelatedIP: {
+    madePayments: string;
+    totalAmount: string;
+  };
+  rdPersonnel: {
+    internal: {
+      researchers: { male: string; female: string };
+      technicians: { male: string; female: string };
+      supportStaff: { male: string; female: string };
+    };
+    external: {
+      researchers: { male: string; female: string };
+      technicians: { male: string; female: string };
+      supportStaff: { male: string; female: string };
+    };
+  };
+  rdPersonnelEducation: {
+    researchers: {
+      phd: { male: string; female: string };
+      masters: { male: string; female: string };
+      bachelors: { male: string; female: string };
+      otherTertiary: { male: string; female: string };
+      nonTertiary: { male: string; female: string };
+    };
+    techniciansAndSupportStaff: {
+      phd: { male: string; female: string };
+      masters: { male: string; female: string };
+      bachelors: { male: string; female: string };
+      otherTertiary: { male: string; female: string };
+      nonTertiary: { male: string; female: string };
+    };
+  };
+  rdPersonnelCitizenship: {
+    researchers: {
+      ksa: { male: string; female: string };
+      foreign: { male: string; female: string };
+    };
+    techniciansAndSupportStaff: {
+      ksa: { male: string; female: string };
+      foreign: { male: string; female: string };
+    };
+  };
+  rdOutputs: {
+    patents: boolean;
+    trademarks: boolean;
+    copyrights: boolean;
+    industrialDesigns: boolean;
+  };
+  rdCollaboration: {
+    ksa: string[];
+    gulfStates: string[];
+    nonGulfStates: string[];
+  };
+};
+
 const Form = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -181,11 +328,15 @@ const Form = () => {
     },
   });
 
-  const handleNestedInputChange = (category, field, value) => {
+  const handleNestedInputChange = (
+    category: keyof FormData,
+    field: string,
+    value: string
+  ) => {
     setFormData((prevState) => ({
       ...prevState,
       [category]: {
-        ...prevState[category],
+        ...(prevState[category as keyof typeof prevState] as object),
         [field]: value,
       },
     }));
@@ -193,8 +344,7 @@ const Form = () => {
 
   const totalSteps = 15;
   const progress = (step / totalSteps) * 100;
-
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -202,7 +352,15 @@ const Form = () => {
     }));
   };
 
-  const handleAddressChange = (e) => {
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -213,13 +371,57 @@ const Form = () => {
     }));
   };
 
-  const handleDeepNestedInputChange = (category, subcategory, field, value) => {
+  const handleCheckboxChange = (category: keyof FormData, field: string) => {
     setFormData((prevState) => ({
       ...prevState,
       [category]: {
-        ...prevState[category],
+        ...(prevState[category as keyof typeof prevState] as {
+          [key: string]: any;
+        }),
+        [field]:
+          !prevState[category as keyof typeof prevState][
+            field as keyof (typeof prevState)[typeof category]
+          ],
+      },
+    }));
+  };
+
+  const handleCollaborationChange = (
+    category: "ksa" | "gulfStates" | "nonGulfStates",
+    value: string
+  ) => {
+    setFormData((prevState) => {
+      const currentArray: string[] = prevState.rdCollaboration[category];
+
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter((item) => item !== value)
+        : [...currentArray, value];
+      return {
+        ...prevState,
+        rdCollaboration: {
+          ...prevState.rdCollaboration,
+          [category]: newArray,
+        },
+      };
+    });
+  };
+
+  const handleDeepNestedInputChange = (
+    category: keyof FormData,
+    subcategory: string,
+    field: string,
+    value: string | { [key: string]: string }
+  ) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [category]: {
+        ...(prevState[category as keyof typeof prevState] as {
+          [key: string]: any;
+        }),
         [subcategory]: {
-          ...prevState[category][subcategory],
+          ...(prevState[category as keyof typeof prevState][
+            subcategory as keyof (typeof prevState)[typeof category]
+          ] as { [key: string]: any }),
           [field]: value,
         },
       },
@@ -852,7 +1054,7 @@ const Form = () => {
                 id="rdIndustryOrientation"
                 name="rdIndustryOrientation"
                 value={formData.rdIndustryOrientation}
-                onChange={handleInputChange}
+                onChange={handleTextareaChange}
                 placeholder="Enter ISIC Rev.4 industry codes and amounts"
               />
             </div>
@@ -865,7 +1067,7 @@ const Form = () => {
                 id="rdGeographicLocation"
                 name="rdGeographicLocation"
                 value={formData.rdGeographicLocation}
-                onChange={handleInputChange}
+                onChange={handleTextareaChange}
                 placeholder="Enter regions and amounts"
               />
             </div>
@@ -2329,7 +2531,7 @@ const Form = () => {
                         "nonProfit"
                       )}
                       onCheckedChange={() =>
-                        handleCollaborationChange("ksa", "nonProfit")
+                        handleCollaborationChange("ksa", "nonProfit" as string)
                       }
                     />
                     <Label htmlFor="ksaNonProfit">
