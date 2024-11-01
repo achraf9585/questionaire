@@ -239,7 +239,7 @@ const Form = () => {
       <CardHeader>
         <CardTitle>R&D Questionnaire</CardTitle>
         <CardDescription>
-          Please provide information about your enterprise's R&D activities
+          Please provide information about your enterprise&apos;s R&D activities
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -594,7 +594,8 @@ const Form = () => {
             </div>
             <div>
               <Label htmlFor="domesticSales">
-                Total value of your company's domestic sales during year 2023
+                Total value of your company&apos;s domestic sales during year
+                2023
               </Label>
               <Input
                 id="domesticSales"
@@ -665,8 +666,8 @@ const Form = () => {
           <div className="space-y-4">
             <div>
               <Label htmlFor="totalIntramualRDExpenditure">
-                Please report your company's total in-house (intramural) R&D
-                expenditure in year 2023
+                Please report your company&apos;s total in-house (intramural)
+                R&D expenditure in year 2023
               </Label>
               <Input
                 id="totalIntramualRDExpenditure"
@@ -678,7 +679,7 @@ const Form = () => {
             </div>
             <div>
               <Label htmlFor="rdLaborCosts">
-                Your company's R&D labour costs
+                Your company&apos;s R&D labour costs
               </Label>
               <Input
                 id="rdLaborCosts"
@@ -690,7 +691,7 @@ const Form = () => {
             </div>
             <div>
               <Label htmlFor="rdOtherCurrentCosts">
-                Your company's other current R&D performance costs
+                Your company&apos;s other current R&D performance costs
               </Label>
               <Input
                 id="rdOtherCurrentCosts"
@@ -702,8 +703,8 @@ const Form = () => {
             </div>
             <div>
               <Label>
-                Your company's capital expenditure on assets intended to be used
-                for R&D
+                Your company&apos;s capital expenditure on assets intended to be
+                used for R&D
               </Label>
               <div className="space-y-2 mt-2">
                 <div>
@@ -786,8 +787,8 @@ const Form = () => {
           <div className="space-y-4">
             <div>
               <Label>
-                Please allocate your company's intramural R&D expenditure in
-                2023 in the following categories:
+                Please allocate your company&apos;s intramural R&D expenditure
+                in 2023 in the following categories:
               </Label>
               <div className="space-y-2 mt-2">
                 <div>
@@ -844,8 +845,8 @@ const Form = () => {
             </div>
             <div>
               <Label htmlFor="rdIndustryOrientation">
-                Please allocate your company's intramural R&D expenditure in
-                2023 by product field:
+                Please allocate your company&apos;s intramural R&D expenditure
+                in 2023 by product field:
               </Label>
               <Textarea
                 id="rdIndustryOrientation"
@@ -857,8 +858,8 @@ const Form = () => {
             </div>
             <div>
               <Label htmlFor="rdGeographicLocation">
-                Please allocate your company's intramural R&D expenditure in
-                2023 by geographic location within KSA:
+                Please allocate your company&apos;s intramural R&D expenditure
+                in 2023 by geographic location within KSA:
               </Label>
               <Textarea
                 id="rdGeographicLocation"
@@ -874,8 +875,8 @@ const Form = () => {
           <div className="space-y-4">
             <div>
               <Label>
-                Please report your company's intramural R&D expenditure in 2023
-                for the following key technologies:
+                Please report your company&apos;s intramural R&D expenditure in
+                2023 for the following key technologies:
               </Label>
               <div className="space-y-2 mt-2">
                 <div>
@@ -968,8 +969,8 @@ const Form = () => {
           <div className="space-y-4">
             <div>
               <Label>
-                Please allocate your company's intramural R&D expenditure in
-                2023 by field of R&D (FORD):
+                Please allocate your company&apos;s intramural R&D expenditure
+                in 2023 by field of R&D (FORD):
               </Label>
               <div className="space-y-2 mt-2">
                 <div>
@@ -1083,8 +1084,8 @@ const Form = () => {
             </div>
             <div>
               <Label>
-                Please allocate your company's intramural R&D expenditure in
-                2023 by socio-economic objective (SEO):
+                Please allocate your company&apos;s intramural R&D expenditure
+                in 2023 by socio-economic objective (SEO):
               </Label>
               <div className="space-y-2 mt-2">
                 <div>
@@ -1625,8 +1626,8 @@ const Form = () => {
             <div>
               <Label htmlFor="rdRelatedIPMadePayments">
                 Did your company make any payments to others in year 2023 for
-                buying or licensing-in rights to use another party's IP from
-                their previous R&D?
+                buying or licensing-in rights to use another party&apos;s IP
+                from their previous R&D?
               </Label>
               <RadioGroup
                 name="rdRelatedIPMadePayments"
