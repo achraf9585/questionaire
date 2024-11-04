@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -32,6 +34,356 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+// Define the Zod schema
+const FormSchema = z.object({
+  enterpriseName: z.string().min(1, "Enterprise name is required"),
+  partOfGroup: z.enum(["yes", "no"]),
+  headOrAffiliate: z.enum(["head", "affiliate"]).optional(),
+  headLocation: z.enum(["ksa", "abroad"]).optional(),
+  headCountry: z.string().optional(),
+  reportingUnit: z.enum(["enterprise", "group", "other"]),
+  subsidiariesCovered: z.string().optional(),
+  reportingYear: z.enum(["yes", "no"]),
+  reportingPeriod: z.string().optional(),
+  businessRegistrationNumber: z
+    .string()
+    .min(1, "Business registration number is required"),
+  address: z.object({
+    street: z.string().min(1, "Street is required"),
+    city: z.string().min(1, "City is required"),
+    region: z.string().min(1, "Region is required"),
+    postCode: z.string().min(1, "Post code is required"),
+  }),
+  website: z.string().url("Invalid URL"),
+  email: z.string().email("Invalid email address"),
+  contactNumber: z.string().min(1, "Contact number is required"),
+  mainBusinessActivity: z.string().min(1, "Main business activity is required"),
+  isicCode: z.string().min(1, "ISIC code is required"),
+  governmentOwned: z.enum(["yes", "no"]),
+  establishmentYear: z.string().regex(/^\d{4}$/, "Must be a valid year"),
+  totalEmployees: z.string().min(1, "Total employees is required"),
+  worldwideWorkforce: z.string().optional(),
+  domesticSales: z.string().min(1, "Domestic sales is required"),
+  carriedOutRD: z.enum(["yes", "no"]),
+  providedFundsForRD: z.enum(["yes", "no"]),
+  totalIntramualRDExpenditure: z
+    .string()
+    .min(1, "Total intramual R&D expenditure is required"),
+  rdLaborCosts: z.string().min(1, "R&D labor costs is required"),
+  rdOtherCurrentCosts: z.string().min(1, "R&D other current costs is required"),
+  rdCapitalExpenditure: z.object({
+    landAndBuildings: z
+      .string()
+      .min(1, "Land and buildings expenditure is required"),
+    machineryAndEquipment: z
+      .string()
+      .min(1, "Machinery and equipment expenditure is required"),
+    capitalizedSoftware: z
+      .string()
+      .min(1, "Capitalized software expenditure is required"),
+    otherIntellectualProperty: z
+      .string()
+      .min(1, "Other intellectual property expenditure is required"),
+  }),
+  rdTypeAllocation: z.object({
+    basicResearch: z.string().min(1, "Basic research allocation is required"),
+    appliedResearch: z
+      .string()
+      .min(1, "Applied research allocation is required"),
+    experimentalDevelopment: z
+      .string()
+      .min(1, "Experimental development allocation is required"),
+  }),
+  rdIndustryOrientation: z.array(z.string()),
+  rdGeographicLocation: z.array(z.string()),
+  rdKeyTechnologies: z.object({
+    ictHardware: z.string().min(1, "ICT hardware expenditure is required"),
+    software: z.string().min(1, "Software expenditure is required"),
+    artificialIntelligence: z.string().min(1, "AI expenditure is required"),
+    biotechnology: z.string().min(1, "Biotechnology expenditure is required"),
+    renewableEnergy: z
+      .string()
+      .min(1, "Renewable energy expenditure is required"),
+  }),
+  rdFieldOfResearch: z.object({
+    naturalSciences: z
+      .string()
+      .min(1, "Natural sciences expenditure is required"),
+    engineeringAndTechnology: z
+      .string()
+      .min(1, "Engineering and technology expenditure is required"),
+    medicalAndHealthSciences: z
+      .string()
+      .min(1, "Medical and health sciences expenditure is required"),
+    agriculturalAndVeterinarySciences: z
+      .string()
+      .min(1, "Agricultural and veterinary sciences expenditure is required"),
+    socialSciences: z
+      .string()
+      .min(1, "Social sciences expenditure is required"),
+    humanitiesAndArts: z
+      .string()
+      .min(1, "Humanities and arts expenditure is required"),
+  }),
+  rdSocioEconomicObjective: z.object({
+    earthExploration: z
+      .string()
+      .min(1, "Earth exploration expenditure is required"),
+    environment: z.string().min(1, "Environment expenditure is required"),
+    spaceExploration: z
+      .string()
+      .min(1, "Space exploration expenditure is required"),
+    transport: z.string().min(1, "Transport expenditure is required"),
+    energy: z.string().min(1, "Energy expenditure is required"),
+    industrialProduction: z
+      .string()
+      .min(1, "Industrial production expenditure is required"),
+    health: z.string().min(1, "Health expenditure is required"),
+    agriculture: z.string().min(1, "Agriculture expenditure is required"),
+    education: z.string().min(1, "Education expenditure is required"),
+    culture: z.string().min(1, "Culture expenditure is required"),
+    politicalSystems: z
+      .string()
+      .min(1, "Political systems expenditure is required"),
+    defence: z.string().min(1, "Defence expenditure is required"),
+  }),
+  sourcesOfFunds: z.object({
+    parentCompanies: z.object({
+      ksa: z.string().min(1, "KSA parent companies funding is required"),
+      abroad: z.string().min(1, "Abroad parent companies funding is required"),
+    }),
+    nonAffiliatedCompanies: z.object({
+      ksa: z
+        .string()
+        .min(1, "KSA non-affiliated companies funding is required"),
+      abroad: z
+        .string()
+        .min(1, "Abroad non-affiliated companies funding is required"),
+    }),
+    governmentGrants: z.object({
+      ksa: z.string().min(1, "KSA government grants funding is required"),
+    }),
+    governmentContracts: z.object({
+      ksa: z.string().min(1, "KSA government contracts funding is required"),
+    }),
+    foreignGovernments: z.object({
+      abroad: z
+        .string()
+        .min(1, "Abroad foreign governments funding is required"),
+    }),
+    higherEducation: z.object({
+      ksa: z.string().min(1, "KSA higher education funding is required"),
+      abroad: z.string().min(1, "Abroad higher education funding is required"),
+    }),
+    privateNonProfits: z.object({
+      ksa: z.string().min(1, "KSA private non-profits funding is required"),
+      abroad: z
+        .string()
+        .min(1, "Abroad private non-profits funding is required"),
+    }),
+    ownFunds: z.object({
+      ksa: z.string().min(1, "KSA own funds is required"),
+      abroad: z.string().min(1, "Abroad own funds is required"),
+    }),
+  }),
+  rdTaxCredits: z.object({
+    received: z.enum(["yes", "no"]),
+    amount: z.string().optional(),
+  }),
+  extramualRD: z.object({
+    madePayments: z.enum(["yes", "no"]),
+    totalAmount: z.string().optional(),
+  }),
+  rdRelatedIP: z.object({
+    madePayments: z.enum(["yes", "no"]),
+    totalAmount: z.string().optional(),
+  }),
+  rdPersonnel: z.object({
+    internal: z.object({
+      researchers: z.object({
+        male: z.string().min(1, "Male researchers count is required"),
+        female: z.string().min(1, "Female researchers count is required"),
+      }),
+      technicians: z.object({
+        male: z.string().min(1, "Male technicians count is required"),
+        female: z.string().min(1, "Female technicians count is required"),
+      }),
+      supportStaff: z.object({
+        male: z.string().min(1, "Male support staff count is required"),
+        female: z.string().min(1, "Female support staff count is required"),
+      }),
+    }),
+    external: z.object({
+      researchers: z.object({
+        male: z.string().min(1, "Male external researchers count is required"),
+        female: z
+          .string()
+          .min(1, "Female external researchers count is required"),
+      }),
+      technicians: z.object({
+        male: z.string().min(1, "Male external technicians count is required"),
+        female: z
+          .string()
+          .min(1, "Female external technicians count is required"),
+      }),
+      supportStaff: z.object({
+        male: z
+          .string()
+          .min(1, "Male external support staff count is required"),
+        female: z
+          .string()
+          .min(1, "Female external support staff count is required"),
+      }),
+    }),
+  }),
+  rdPersonnelEducation: z.object({
+    researchers: z.object({
+      phd: z.object({
+        male: z.string().min(1, "Male PhD researchers count is required"),
+        female: z.string().min(1, "Female PhD researchers count is required"),
+      }),
+      masters: z.object({
+        male: z.string().min(1, "Male Master's researchers count is required"),
+        female: z
+          .string()
+          .min(1, "Female Master's researchers count is required"),
+      }),
+      bachelors: z.object({
+        male: z
+          .string()
+          .min(1, "Male Bachelor's researchers count is required"),
+        female: z
+          .string()
+          .min(1, "Female Bachelor's researchers count is required"),
+      }),
+      otherTertiary: z.object({
+        male: z
+          .string()
+          .min(1, "Male other tertiary researchers count is required"),
+        female: z
+          .string()
+          .min(1, "Female other tertiary researchers count is required"),
+      }),
+      nonTertiary: z.object({
+        male: z
+          .string()
+          .min(1, "Male non-tertiary researchers count is required"),
+        female: z
+          .string()
+          .min(1, "Female non-tertiary researchers count is required"),
+      }),
+    }),
+    techniciansAndSupportStaff: z.object({
+      phd: z.object({
+        male: z
+          .string()
+          .min(1, "Male PhD technicians/support staff count is required"),
+        female: z
+          .string()
+          .min(1, "Female PhD technicians/support staff count is required"),
+      }),
+      masters: z.object({
+        male: z
+          .string()
+          .min(1, "Male Master's technicians/support staff count is required"),
+        female: z
+          .string()
+          .min(
+            1,
+            "Female Master's technicians/support staff count is required"
+          ),
+      }),
+      bachelors: z.object({
+        male: z
+          .string()
+          .min(
+            1,
+            "Male Bachelor's technicians/support staff count is required"
+          ),
+        female: z
+          .string()
+          .min(
+            1,
+            "Female Bachelor's technicians/support staff count is required"
+          ),
+      }),
+      otherTertiary: z.object({
+        male: z
+          .string()
+          .min(
+            1,
+            "Male other tertiary technicians/support staff count is required"
+          ),
+        female: z
+          .string()
+          .min(
+            1,
+            "Female other tertiary technicians/support staff count is required"
+          ),
+      }),
+      nonTertiary: z.object({
+        male: z
+          .string()
+          .min(
+            1,
+            "Male non-tertiary technicians/support staff count is required"
+          ),
+        female: z
+          .string()
+          .min(
+            1,
+            "Female non-tertiary technicians/support staff count is required"
+          ),
+      }),
+    }),
+  }),
+  rdPersonnelCitizenship: z.object({
+    researchers: z.object({
+      ksa: z.object({
+        male: z.string().min(1, "Male KSA researchers count is required"),
+        female: z.string().min(1, "Female KSA researchers count is required"),
+      }),
+      foreign: z.object({
+        male: z.string().min(1, "Male foreign researchers count is required"),
+        female: z
+          .string()
+          .min(1, "Female foreign researchers count is required"),
+      }),
+    }),
+    techniciansAndSupportStaff: z.object({
+      ksa: z.object({
+        male: z
+          .string()
+          .min(1, "Male KSA technicians/support staff count is required"),
+        female: z
+          .string()
+          .min(1, "Female KSA technicians/support staff count is required"),
+      }),
+      foreign: z.object({
+        male: z
+          .string()
+          .min(1, "Male foreign technicians/support staff count is required"),
+        female: z
+          .string()
+          .min(1, "Female foreign technicians/support staff count is required"),
+      }),
+    }),
+  }),
+  rdOutputs: z.object({
+    patents: z.boolean(),
+    trademarks: z.boolean(),
+    copyrights: z.boolean(),
+    industrialDesigns: z.boolean(),
+  }),
+  rdCollaboration: z.object({
+    ksa: z.array(z.string()),
+    gulfStates: z.array(z.string()),
+    nonGulfStates: z.array(z.string()),
+  }),
+});
+
+type FormData = z.infer<typeof FormSchema>;
+/*
 type FormData = {
   enterpriseName: string;
   partOfGroup: string;
@@ -178,8 +530,8 @@ type FormData = {
     nonGulfStates: string[];
   };
 };
-
-const Form = () => {
+*/
+const FormRd = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     enterpriseName: "",
@@ -2560,4 +2912,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default FormRd;
