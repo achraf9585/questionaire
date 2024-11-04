@@ -48,12 +48,12 @@ const FormSchema = z.object({
   businessRegistrationNumber: z
     .string()
     .min(1, "Business registration number is required"),
-  address: z.object({
-    street: z.string().min(1, "Street is required"),
-    city: z.string().min(1, "City is required"),
-    region: z.string().min(1, "Region is required"),
-    postCode: z.string().min(1, "Post code is required"),
-  }),
+  //address: z.object({
+  street: z.string().min(1, "Street is required"),
+  city: z.string().min(1, "City is required"),
+  region: z.string().min(1, "Region is required"),
+  postCode: z.string().min(1, "Post code is required"),
+  //}),
   website: z.string().url("Invalid URL"),
   email: z.string().email("Invalid email address"),
   contactNumber: z.string().min(1, "Contact number is required"),
@@ -383,156 +383,10 @@ const FormSchema = z.object({
 });
 
 type FormData = z.infer<typeof FormSchema>;
-/*
-type FormData = {
-  enterpriseName: string;
-  partOfGroup: string;
-  headOrAffiliate: string;
-  headLocation: string;
-  headCountry: string;
-  reportingUnit: string;
-  subsidiariesCovered: string;
-  reportingYear: string;
-  reportingPeriod: string;
-  businessRegistrationNumber: string;
-  address: {
-    street: string;
-    city: string;
-    region: string;
-    postCode: string;
-  };
-  website: string;
-  email: string;
-  contactNumber: string;
-  mainBusinessActivity: string;
-  isicCode: string;
-  governmentOwned: string;
-  establishmentYear: string;
-  totalEmployees: string;
-  worldwideWorkforce: string;
-  domesticSales: string;
-  carriedOutRD: string;
-  providedFundsForRD: string;
-  totalIntramualRDExpenditure: string;
-  rdLaborCosts: string;
-  rdOtherCurrentCosts: string;
-  rdCapitalExpenditure: {
-    landAndBuildings: string;
-    machineryAndEquipment: string;
-    capitalizedSoftware: string;
-    otherIntellectualProperty: string;
-  };
-  rdTypeAllocation: {
-    basicResearch: string;
-    appliedResearch: string;
-    experimentalDevelopment: string;
-  };
-  rdIndustryOrientation: string[];
-  rdGeographicLocation: string[];
-  rdKeyTechnologies: {
-    ictHardware: string;
-    software: string;
-    artificialIntelligence: string;
-    biotechnology: string;
-    renewableEnergy: string;
-  };
-  rdFieldOfResearch: {
-    naturalSciences: string;
-    engineeringAndTechnology: string;
-    medicalAndHealthSciences: string;
-    agriculturalAndVeterinarySciences: string;
-    socialSciences: string;
-    humanitiesAndArts: string;
-  };
-  rdSocioEconomicObjective: {
-    earthExploration: string;
-    environment: string;
-    spaceExploration: string;
-    transport: string;
-    energy: string;
-    industrialProduction: string;
-    health: string;
-    agriculture: string;
-    education: string;
-    culture: string;
-    politicalSystems: string;
-    defence: string;
-  };
-  sourcesOfFunds: {
-    parentCompanies: { ksa: string; abroad: string };
-    nonAffiliatedCompanies: { ksa: string; abroad: string };
-    governmentGrants: { ksa: string };
-    governmentContracts: { ksa: string };
-    foreignGovernments: { abroad: string };
-    higherEducation: { ksa: string; abroad: string };
-    privateNonProfits: { ksa: string; abroad: string };
-    ownFunds: { ksa: string; abroad: string };
-  };
-  rdTaxCredits: {
-    received: string;
-    amount: string;
-  };
-  extramualRD: {
-    madePayments: string;
-    totalAmount: string;
-  };
-  rdRelatedIP: {
-    madePayments: string;
-    totalAmount: string;
-  };
-  rdPersonnel: {
-    internal: {
-      researchers: { male: string; female: string };
-      technicians: { male: string; female: string };
-      supportStaff: { male: string; female: string };
-    };
-    external: {
-      researchers: { male: string; female: string };
-      technicians: { male: string; female: string };
-      supportStaff: { male: string; female: string };
-    };
-  };
-  rdPersonnelEducation: {
-    researchers: {
-      phd: { male: string; female: string };
-      masters: { male: string; female: string };
-      bachelors: { male: string; female: string };
-      otherTertiary: { male: string; female: string };
-      nonTertiary: { male: string; female: string };
-    };
-    techniciansAndSupportStaff: {
-      phd: { male: string; female: string };
-      masters: { male: string; female: string };
-      bachelors: { male: string; female: string };
-      otherTertiary: { male: string; female: string };
-      nonTertiary: { male: string; female: string };
-    };
-  };
-  rdPersonnelCitizenship: {
-    researchers: {
-      ksa: { male: string; female: string };
-      foreign: { male: string; female: string };
-    };
-    techniciansAndSupportStaff: {
-      ksa: { male: string; female: string };
-      foreign: { male: string; female: string };
-    };
-  };
-  rdOutputs: {
-    patents: boolean;
-    trademarks: boolean;
-    copyrights: boolean;
-    industrialDesigns: boolean;
-  };
-  rdCollaboration: {
-    ksa: string[];
-    gulfStates: string[];
-    nonGulfStates: string[];
-  };
-};
-*/
+
 const FormRd = () => {
   const [step, setStep] = useState(1);
+  const [errors, setErrors] = useState<z.ZodIssue[]>([]);
   const [formData, setFormData] = useState({
     enterpriseName: "",
     partOfGroup: "",
@@ -544,12 +398,12 @@ const FormRd = () => {
     reportingYear: "",
     reportingPeriod: "",
     businessRegistrationNumber: "",
-    address: {
-      street: "",
-      city: "",
-      region: "",
-      postCode: "",
-    },
+    // address: {
+    street: "",
+    city: "",
+    region: "",
+    postCode: "",
+    //},
     website: "",
     email: "",
     contactNumber: "",
@@ -571,11 +425,11 @@ const FormRd = () => {
       capitalizedSoftware: "",
       otherIntellectualProperty: "",
     },
-    rdTypeAllocation: {
-      basicResearch: "",
-      appliedResearch: "",
-      experimentalDevelopment: "",
-    },
+
+    basicResearch: "",
+    appliedResearch: "",
+    experimentalDevelopment: "",
+
     rdIndustryOrientation: [],
     rdGeographicLocation: [],
     rdKeyTechnologies: {
@@ -680,6 +534,125 @@ const FormRd = () => {
     },
   });
 
+  const validateStep = (step: number) => {
+    let stepSchema;
+    switch (step) {
+      case 1:
+        stepSchema = FormSchema.pick({
+          enterpriseName: true,
+          partOfGroup: true,
+        });
+        break;
+      case 2:
+        stepSchema = FormSchema.pick({
+          reportingUnit: true,
+          subsidiariesCovered: true,
+          reportingYear: true,
+          reportingPeriod: true,
+        });
+        break;
+      case 3:
+        stepSchema = FormSchema.pick({
+          businessRegistrationNumber: true,
+          // address: true,
+          street: true,
+          city: true,
+          region: true,
+          postCode: true,
+        });
+        break;
+      case 4:
+        stepSchema = FormSchema.pick({
+          website: true,
+          email: true,
+          contactNumber: true,
+          mainBusinessActivity: true,
+          isicCode: true,
+        });
+        break;
+      case 5:
+        stepSchema = FormSchema.pick({
+          establishmentYear: true,
+          totalEmployees: true,
+          worldwideWorkforce: true,
+          domesticSales: true,
+        });
+        break;
+
+      case 6:
+        stepSchema = FormSchema.pick({
+          carriedOutRD: true,
+        });
+        break;
+
+      case 7:
+        stepSchema = FormSchema.pick({
+          totalIntramualRDExpenditure: true,
+          rdLaborCosts: true,
+          rdOtherCurrentCosts: true,
+          rdCapitalExpenditure: true,
+        });
+        break;
+
+      case 8:
+        stepSchema = FormSchema.pick({
+          // basicResearch: true,
+          //appliedResearch: true,
+          //experimentalDevelopment: true,
+        });
+        break;
+
+      case 9:
+        stepSchema = FormSchema.pick({
+          // rdTypeAllocation: true,
+        });
+        break;
+      case 10:
+        stepSchema = FormSchema.pick({
+          // rdTypeAllocation: true,
+        });
+        break;
+      case 11:
+        stepSchema = FormSchema.pick({
+          // rdTypeAllocation: true,
+        });
+        break;
+
+      case 12:
+        stepSchema = FormSchema.pick({
+          // rdTypeAllocation: true,
+        });
+        break;
+
+      case 13:
+        stepSchema = FormSchema.pick({
+          // rdTypeAllocation: true,
+        });
+        break;
+
+      case 14:
+        stepSchema = FormSchema.pick({
+          // rdTypeAllocation: true,
+        });
+        break;
+
+      // ... (define schemas for all other steps)
+      default:
+        stepSchema = FormSchema;
+    }
+
+    try {
+      stepSchema.parse(formData);
+      setErrors([]);
+      return true;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(error.issues);
+      }
+      return false;
+    }
+  };
+
   const handleNestedInputChange = (
     category: keyof FormData,
     field: string,
@@ -712,32 +685,6 @@ const FormRd = () => {
     }));
   };
 
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      address: {
-        ...prevState.address,
-        [name]: value,
-      },
-    }));
-  };
-
-  const handleCheckboxChange = (category: keyof FormData, field: string) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [category]: {
-        ...(prevState[category as keyof typeof prevState] as {
-          [key: string]: any;
-        }),
-        [field]:
-          !prevState[category as keyof typeof prevState][
-            field as keyof (typeof prevState)[typeof category]
-          ],
-      },
-    }));
-  };
-
   const handleCollaborationChange = (
     category: "ksa" | "gulfStates" | "nonGulfStates",
     value: string
@@ -757,7 +704,7 @@ const FormRd = () => {
       };
     });
   };
-
+  /*
   const handleDeepNestedInputChange = (
     category: keyof FormData,
     subcategory: string,
@@ -779,15 +726,23 @@ const FormRd = () => {
       },
     }));
   };
-
+*/
   const handleNext = () => {
-    setStep((prevStep) => prevStep + 1);
+    if (validateStep(step)) {
+      setStep((prevStep) => prevStep + 1);
+    }
   };
 
   const handlePrevious = () => {
     setStep((prevStep) => prevStep - 1);
   };
 
+  const renderError = (field: string) => {
+    const error = errors.find((e) => e.path[0] === field);
+    return error ? (
+      <p className="text-red-500 text-sm mt-1">{error.message}</p>
+    ) : null;
+  };
   return (
     <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
@@ -808,6 +763,7 @@ const FormRd = () => {
                 value={formData.enterpriseName}
                 onChange={handleInputChange}
               />
+              {renderError("enterpriseName")}
             </div>
             <div>
               <Label>Is your enterprise part of a group?</Label>
@@ -991,42 +947,47 @@ const FormRd = () => {
                 value={formData.businessRegistrationNumber}
                 onChange={handleInputChange}
               />
+              {renderError("businessRegistrationNumber")}
             </div>
             <div>
               <Label htmlFor="street">Street Name and Number</Label>
               <Input
                 id="street"
                 name="street"
-                value={formData.address.street}
-                onChange={handleAddressChange}
+                value={formData.street}
+                onChange={handleInputChange}
               />
+              {renderError("street")}
             </div>
             <div>
               <Label htmlFor="city">City/Town</Label>
               <Input
                 id="city"
                 name="city"
-                value={formData.address.city}
-                onChange={handleAddressChange}
+                value={formData.city}
+                onChange={handleInputChange}
               />
+              {renderError("city")}
             </div>
             <div>
               <Label htmlFor="region">Region/Province</Label>
               <Input
                 id="region"
                 name="region"
-                value={formData.address.region}
-                onChange={handleAddressChange}
+                value={formData.region}
+                onChange={handleInputChange}
               />
+              {renderError("region")}
             </div>
             <div>
               <Label htmlFor="postCode">Post Code</Label>
               <Input
                 id="postCode"
                 name="postCode"
-                value={formData.address.postCode}
-                onChange={handleAddressChange}
+                value={formData.postCode}
+                onChange={handleInputChange}
               />
+              {renderError("postCode")}
             </div>
           </div>
         )}
@@ -1040,6 +1001,7 @@ const FormRd = () => {
                 value={formData.website}
                 onChange={handleInputChange}
               />
+              {renderError("website")}
             </div>
             <div>
               <Label htmlFor="email">Email</Label>
@@ -1050,6 +1012,7 @@ const FormRd = () => {
                 value={formData.email}
                 onChange={handleInputChange}
               />
+              {renderError("email")}
             </div>
             <div>
               <Label htmlFor="contactNumber">Contact number</Label>
@@ -1059,6 +1022,7 @@ const FormRd = () => {
                 value={formData.contactNumber}
                 onChange={handleInputChange}
               />
+              {renderError("contactNumber")}
             </div>
             <div>
               <Label htmlFor="mainBusinessActivity">
@@ -1070,6 +1034,7 @@ const FormRd = () => {
                 value={formData.mainBusinessActivity}
                 onChange={handleInputChange}
               />
+              {renderError("mainBusinessActivity")}
             </div>
             <div>
               <Label htmlFor="isicCode">ISIC Rev. 4 Code</Label>
@@ -1079,6 +1044,7 @@ const FormRd = () => {
                 value={formData.isicCode}
                 onChange={handleInputChange}
               />
+              {renderError("isicCode")}
             </div>
           </div>
         )}
@@ -1119,6 +1085,7 @@ const FormRd = () => {
                 value={formData.establishmentYear}
                 onChange={handleInputChange}
               />
+              {renderError("establishmentYear")}
             </div>
             <div>
               <Label htmlFor="totalEmployees">
@@ -1132,6 +1099,7 @@ const FormRd = () => {
                 value={formData.totalEmployees}
                 onChange={handleInputChange}
               />
+              {renderError("totalEmployees")}
             </div>
             <div>
               <Label htmlFor="worldwideWorkforce">
@@ -1145,6 +1113,7 @@ const FormRd = () => {
                 value={formData.worldwideWorkforce}
                 onChange={handleInputChange}
               />
+              {renderError("worldwideWorkforce")}
             </div>
             <div>
               <Label htmlFor="domesticSales">
@@ -1158,6 +1127,7 @@ const FormRd = () => {
                 value={formData.domesticSales}
                 onChange={handleInputChange}
               />
+              {renderError("domesticSales")}
             </div>
           </div>
         )}
@@ -1230,6 +1200,7 @@ const FormRd = () => {
                 value={formData.totalIntramualRDExpenditure}
                 onChange={handleInputChange}
               />
+              {renderError("totalIntramualRDExpenditure")}
             </div>
             <div>
               <Label htmlFor="rdLaborCosts">
@@ -1242,6 +1213,7 @@ const FormRd = () => {
                 value={formData.rdLaborCosts}
                 onChange={handleInputChange}
               />
+              {renderError("rdLaborCosts")}
             </div>
             <div>
               <Label htmlFor="rdOtherCurrentCosts">
@@ -1254,6 +1226,7 @@ const FormRd = () => {
                 value={formData.rdOtherCurrentCosts}
                 onChange={handleInputChange}
               />
+              {renderError("rdOtherCurrentCosts")}
             </div>
             <div>
               <Label>
@@ -1276,6 +1249,7 @@ const FormRd = () => {
                       )
                     }
                   />
+                  {renderError("landAndBuildings")}
                 </div>
                 <div>
                   <Label htmlFor="machineryAndEquipment">
@@ -1312,6 +1286,7 @@ const FormRd = () => {
                       )
                     }
                   />
+                  {renderError("capitalizedSoftware")}
                 </div>
                 <div>
                   <Label htmlFor="otherIntellectualProperty">
@@ -1351,7 +1326,7 @@ const FormRd = () => {
                     id="basicResearch"
                     name="basicResearch"
                     type="number"
-                    value={formData.rdTypeAllocation.basicResearch}
+                    value={formData.basicResearch}
                     onChange={(e) =>
                       handleNestedInputChange(
                         "rdTypeAllocation",
@@ -1367,7 +1342,7 @@ const FormRd = () => {
                     id="appliedResearch"
                     name="appliedResearch"
                     type="number"
-                    value={formData.rdTypeAllocation.appliedResearch}
+                    value={formData.appliedResearch}
                     onChange={(e) =>
                       handleNestedInputChange(
                         "rdTypeAllocation",
@@ -1385,7 +1360,7 @@ const FormRd = () => {
                     id="experimentalDevelopment"
                     name="experimentalDevelopment"
                     type="number"
-                    value={formData.rdTypeAllocation.experimentalDevelopment}
+                    value={formData.experimentalDevelopment}
                     onChange={(e) =>
                       handleNestedInputChange(
                         "rdTypeAllocation",
@@ -1873,28 +1848,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.parentCompanies.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "parentCompanies",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.parentCompanies.abroad}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "parentCompanies",
-                          "abroad",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -1904,14 +1863,6 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.nonAffiliatedCompanies.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "nonAffiliatedCompanies",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -1919,14 +1870,6 @@ const FormRd = () => {
                       type="number"
                       value={
                         formData.sourcesOfFunds.nonAffiliatedCompanies.abroad
-                      }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "nonAffiliatedCompanies",
-                          "abroad",
-                          e.target.value
-                        )
                       }
                     />
                   </TableCell>
@@ -1937,14 +1880,6 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.governmentGrants.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "governmentGrants",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>N/A</TableCell>
@@ -1955,14 +1890,6 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.governmentContracts.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "governmentContracts",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>N/A</TableCell>
@@ -1976,14 +1903,6 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.foreignGovernments.abroad}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "foreignGovernments",
-                          "abroad",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -1993,28 +1912,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.higherEducation.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "higherEducation",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.higherEducation.abroad}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "higherEducation",
-                          "abroad",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2024,28 +1927,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.privateNonProfits.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "privateNonProfits",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.privateNonProfits.abroad}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "privateNonProfits",
-                          "abroad",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2055,28 +1942,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.ownFunds.ksa}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "ownFunds",
-                          "ksa",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.sourcesOfFunds.ownFunds.abroad}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "sourcesOfFunds",
-                          "ownFunds",
-                          "abroad",
-                          e.target.value
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2246,34 +2117,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnel.internal.researchers.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "internal",
-                          "researchers",
-                          {
-                            ...formData.rdPersonnel.internal.researchers,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.rdPersonnel.internal.researchers.female}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "internal",
-                          "researchers",
-                          {
-                            ...formData.rdPersonnel.internal.researchers,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2283,34 +2132,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnel.internal.technicians.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "internal",
-                          "technicians",
-                          {
-                            ...formData.rdPersonnel.internal.technicians,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.rdPersonnel.internal.technicians.female}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "internal",
-                          "technicians",
-                          {
-                            ...formData.rdPersonnel.internal.technicians,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2320,34 +2147,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnel.internal.supportStaff.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "internal",
-                          "supportStaff",
-                          {
-                            ...formData.rdPersonnel.internal.supportStaff,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.rdPersonnel.internal.supportStaff.female}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "internal",
-                          "supportStaff",
-                          {
-                            ...formData.rdPersonnel.internal.supportStaff,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2364,34 +2169,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnel.external.researchers.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "external",
-                          "researchers",
-                          {
-                            ...formData.rdPersonnel.external.researchers,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.rdPersonnel.external.researchers.female}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "external",
-                          "researchers",
-                          {
-                            ...formData.rdPersonnel.external.researchers,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2401,34 +2184,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnel.external.technicians.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "external",
-                          "technicians",
-                          {
-                            ...formData.rdPersonnel.external.technicians,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.rdPersonnel.external.technicians.female}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "external",
-                          "technicians",
-                          {
-                            ...formData.rdPersonnel.external.technicians,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2438,34 +2199,12 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnel.external.supportStaff.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "external",
-                          "supportStaff",
-                          {
-                            ...formData.rdPersonnel.external.supportStaff,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
                     <Input
                       type="number"
                       value={formData.rdPersonnel.external.supportStaff.female}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnel",
-                          "external",
-                          "supportStaff",
-                          {
-                            ...formData.rdPersonnel.external.supportStaff,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2502,17 +2241,6 @@ const FormRd = () => {
                     <Input
                       type="number"
                       value={formData.rdPersonnelEducation.researchers.phd.male}
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelEducation",
-                          "researchers",
-                          "phd",
-                          {
-                            ...formData.rdPersonnelEducation.researchers.phd,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -2520,17 +2248,6 @@ const FormRd = () => {
                       type="number"
                       value={
                         formData.rdPersonnelEducation.researchers.phd.female
-                      }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelEducation",
-                          "researchers",
-                          "phd",
-                          {
-                            ...formData.rdPersonnelEducation.researchers.phd,
-                            female: e.target.value,
-                          }
-                        )
                       }
                     />
                   </TableCell>
@@ -2541,18 +2258,6 @@ const FormRd = () => {
                         formData.rdPersonnelEducation.techniciansAndSupportStaff
                           .phd.male
                       }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelEducation",
-                          "techniciansAndSupportStaff",
-                          "phd",
-                          {
-                            ...formData.rdPersonnelEducation
-                              .techniciansAndSupportStaff.phd,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -2561,18 +2266,6 @@ const FormRd = () => {
                       value={
                         formData.rdPersonnelEducation.techniciansAndSupportStaff
                           .phd.female
-                      }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelEducation",
-                          "techniciansAndSupportStaff",
-                          "phd",
-                          {
-                            ...formData.rdPersonnelEducation
-                              .techniciansAndSupportStaff.phd,
-                            female: e.target.value,
-                          }
-                        )
                       }
                     />
                   </TableCell>
@@ -2609,17 +2302,6 @@ const FormRd = () => {
                       value={
                         formData.rdPersonnelCitizenship.researchers.ksa.male
                       }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "researchers",
-                          "ksa",
-                          {
-                            ...formData.rdPersonnelCitizenship.researchers.ksa,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -2627,17 +2309,6 @@ const FormRd = () => {
                       type="number"
                       value={
                         formData.rdPersonnelCitizenship.researchers.ksa.female
-                      }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "researchers",
-                          "ksa",
-                          {
-                            ...formData.rdPersonnelCitizenship.researchers.ksa,
-                            female: e.target.value,
-                          }
-                        )
                       }
                     />
                   </TableCell>
@@ -2648,18 +2319,6 @@ const FormRd = () => {
                         formData.rdPersonnelCitizenship
                           .techniciansAndSupportStaff.ksa.male
                       }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "techniciansAndSupportStaff",
-                          "ksa",
-                          {
-                            ...formData.rdPersonnelCitizenship
-                              .techniciansAndSupportStaff.ksa,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -2668,18 +2327,6 @@ const FormRd = () => {
                       value={
                         formData.rdPersonnelCitizenship
                           .techniciansAndSupportStaff.ksa.female
-                      }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "techniciansAndSupportStaff",
-                          "ksa",
-                          {
-                            ...formData.rdPersonnelCitizenship
-                              .techniciansAndSupportStaff.ksa,
-                            female: e.target.value,
-                          }
-                        )
                       }
                     />
                   </TableCell>
@@ -2692,18 +2339,6 @@ const FormRd = () => {
                       value={
                         formData.rdPersonnelCitizenship.researchers.foreign.male
                       }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "researchers",
-                          "foreign",
-                          {
-                            ...formData.rdPersonnelCitizenship.researchers
-                              .foreign,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -2712,18 +2347,6 @@ const FormRd = () => {
                       value={
                         formData.rdPersonnelCitizenship.researchers.foreign
                           .female
-                      }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "researchers",
-                          "foreign",
-                          {
-                            ...formData.rdPersonnelCitizenship.researchers
-                              .foreign,
-                            female: e.target.value,
-                          }
-                        )
                       }
                     />
                   </TableCell>
@@ -2734,18 +2357,6 @@ const FormRd = () => {
                         formData.rdPersonnelCitizenship
                           .techniciansAndSupportStaff.foreign.male
                       }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "techniciansAndSupportStaff",
-                          "foreign",
-                          {
-                            ...formData.rdPersonnelCitizenship
-                              .techniciansAndSupportStaff.foreign,
-                            male: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                   <TableCell>
@@ -2755,18 +2366,6 @@ const FormRd = () => {
                         formData.rdPersonnelCitizenship
                           .techniciansAndSupportStaff.foreign.female
                       }
-                      onChange={(e) =>
-                        handleDeepNestedInputChange(
-                          "rdPersonnelCitizenship",
-                          "techniciansAndSupportStaff",
-                          "foreign",
-                          {
-                            ...formData.rdPersonnelCitizenship
-                              .techniciansAndSupportStaff.foreign,
-                            female: e.target.value,
-                          }
-                        )
-                      }
                     />
                   </TableCell>
                 </TableRow>
@@ -2775,22 +2374,13 @@ const FormRd = () => {
             <h3 className="text-lg font-semibold mt-6">R&D Outputs</h3>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="patents"
-                  checked={formData.rdOutputs.patents}
-                  onCheckedChange={() =>
-                    handleCheckboxChange("rdOutputs", "patents")
-                  }
-                />
+                <Checkbox id="patents" checked={formData.rdOutputs.patents} />
                 <Label htmlFor="patents">Patents</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="trademarks"
                   checked={formData.rdOutputs.trademarks}
-                  onCheckedChange={() =>
-                    handleCheckboxChange("rdOutputs", "trademarks")
-                  }
                 />
                 <Label htmlFor="trademarks">Trademarks</Label>
               </div>
@@ -2798,9 +2388,6 @@ const FormRd = () => {
                 <Checkbox
                   id="copyrights"
                   checked={formData.rdOutputs.copyrights}
-                  onCheckedChange={() =>
-                    handleCheckboxChange("rdOutputs", "copyrights")
-                  }
                 />
                 <Label htmlFor="copyrights">Copyrights</Label>
               </div>
@@ -2808,9 +2395,6 @@ const FormRd = () => {
                 <Checkbox
                   id="industrialDesigns"
                   checked={formData.rdOutputs.industrialDesigns}
-                  onCheckedChange={() =>
-                    handleCheckboxChange("rdOutputs", "industrialDesigns")
-                  }
                 />
                 <Label htmlFor="industrialDesigns">Industrial designs</Label>
               </div>
