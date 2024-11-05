@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export function Navbar() {
   return (
-    <nav className="flex h-20 w-full items-center justify-between rounded-lg bg-blue-500/10 px-2 backdrop-blur-md backdrop-brightness-90">
+    <nav className="fixed top-0 left-0 bg-opacity-90  flex h-20 w-full items-center justify-between  bg-black *:  backdrop-blur-md backdrop-brightness-90">
       <div></div>
       <div className="flex gap-8">
         <Link href="/">
